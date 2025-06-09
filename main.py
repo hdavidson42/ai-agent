@@ -3,6 +3,8 @@ import os
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+from call_function import available_functions
+from prompts import system_prompt
 
 
 def main():
@@ -19,6 +21,9 @@ def main():
 
     api_key = os.environ.get("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
+    model_name = "gemini-2.0-flash-001"
+    
+
 
     user_prompt = " ".join(args)
 
@@ -33,15 +38,25 @@ def main():
 
 
 def generate_content(client, messages, verbose):
+    
+    
+    
+    
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
         contents=messages,
+        config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt)
     )
+    function_call_parts = response.function_calls
     if verbose:
         print("Prompt tokens:", response.usage_metadata.prompt_token_count)
         print("Response tokens:", response.usage_metadata.candidates_token_count)
     print("Response:")
-    print(response.text)
+    if function_call_parts:
+        for function_call_part in function_call_parts:
+            print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+    else:
+        print(response.text)
 
 
 if __name__ == "__main__":
