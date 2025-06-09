@@ -3,8 +3,9 @@ import os
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-from call_function import available_functions
+from call_function import available_functions, call_function
 from prompts import system_prompt
+
 
 
 def main():
@@ -54,7 +55,13 @@ def generate_content(client, messages, verbose):
     print("Response:")
     if function_call_parts:
         for function_call_part in function_call_parts:
-            print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+            function_call_result = call_function(function_call_part, verbose)
+            if not function_call_result.parts or not function_call_result.parts[0].function_response:
+                raise Exception("whatever")
+            if verbose:
+                print(f"-> {function_call_result.parts[0].function_response.response}")
+           
+               
     else:
         print(response.text)
 

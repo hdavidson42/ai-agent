@@ -30,7 +30,7 @@ def run_python_file(working_directory, file_path):
         return f"Error: executing Python file: {e}"
     
 schema_run_python = types.FunctionDeclaration(
-    name="run_python_files",
+    name="run_python_file",
     description="Executes a .py python file from the given file path. Constrained to working directory",
     parameters=types.Schema(
         type=types.Type.OBJECT,
