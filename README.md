@@ -1,5 +1,6 @@
 # Personal AI agent
 **This was created for education and personal use. This agent has the ability to read, write to and overwrite files, and execute .py python files. Without robust security features I would not recommend using this on your personal machine**
+![demo](https://files.catbox.moe/z0lvr6.gif)
 ## Description
 This is an AI agent created using google gemini's API. It can take a prompt and use it's LLM to generate a text response. It also has the functions to:
 - List files and directories
